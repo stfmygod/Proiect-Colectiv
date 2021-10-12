@@ -31,7 +31,3 @@ build
 out
 generated
 MANIFEST.MF
-
-#gradle
-gradle
-.gradle
