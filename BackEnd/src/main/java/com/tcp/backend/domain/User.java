@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Table(name = "users")
 public class User extends BaseEntity {
     private String email;
     private String username;
@@ -23,7 +24,7 @@ public class User extends BaseEntity {
     private List<Activity> activities;
     @ManyToMany
     @JoinTable(
-            name = "user_group",
+            name = "users_groups",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )

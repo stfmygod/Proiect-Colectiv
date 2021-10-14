@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Table(name = "groups")
 public class Group extends BaseEntity {
     private String name;
     private String code;
