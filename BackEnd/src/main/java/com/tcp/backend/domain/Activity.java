@@ -1,5 +1,6 @@
 package com.tcp.backend.domain;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,6 +14,7 @@ import java.time.LocalTime;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Builder
 @Table(name="activities")
 public class Activity extends BaseEntity {
     @ManyToOne
