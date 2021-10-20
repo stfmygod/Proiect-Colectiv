@@ -2,12 +2,15 @@ package com.tcp.backend.converter;
 
 import com.tcp.backend.domain.Activity;
 import com.tcp.backend.dto.ActivityDto;
+import com.tcp.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class ActivityConverter implements BaseConvertor<ActivityDto, Activity> {
 
-    //private final UseRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ActivityDto convertModelToDto(Activity model) {
@@ -25,7 +28,7 @@ public class ActivityConverter implements BaseConvertor<ActivityDto, Activity> {
     @Override
     public Activity convertDtoToModel(ActivityDto dto) {
         Activity activity = Activity.builder()
-                //.user(userRepository.getById(dto.getUserId()))
+                .user(userRepository.getById(dto.getUserId()))
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .date(dto.getDate())
