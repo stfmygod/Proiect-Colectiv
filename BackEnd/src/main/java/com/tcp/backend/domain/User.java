@@ -3,6 +3,7 @@ package com.tcp.backend.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -12,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements Serializable {
     private String email;
     private String username;
     private String password;
