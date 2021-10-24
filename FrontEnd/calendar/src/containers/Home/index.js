@@ -1,5 +1,5 @@
 import React from "react";
-import MyButton from "../../components/Button";
+import { useSelector } from "react-redux";
 
 const styles = {
     pageWrapper: {
@@ -8,14 +8,11 @@ const styles = {
 };
 
 const Home = () => {
+    const user = useSelector((state) => state.user);
+    console.log(user);
     return (
         <div style={styles.pageWrapper}>
-            <MyButton
-                title="Test"
-                onClick={() => {
-                    console.log("Test clicked!!");
-                }}
-            />
+            <h1>Home</h1>
         </div>
     );
 };
