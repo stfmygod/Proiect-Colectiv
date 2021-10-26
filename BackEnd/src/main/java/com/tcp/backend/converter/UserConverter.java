@@ -31,8 +31,4 @@ public class UserConverter implements BaseConvertor<UserDto, User> {
         user.setId(dto.getId());
         return user;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feature/activity

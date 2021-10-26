@@ -1,8 +1,11 @@
 package com.tcp.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

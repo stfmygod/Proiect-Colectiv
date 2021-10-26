@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> feature/activity
 package com.tcp.backend.dto;
 
 import lombok.AllArgsConstructor;
@@ -22,8 +18,4 @@ public class UserDto implements Serializable {
     private String password;
     private String firstName;
     private String lastName;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feature/activity

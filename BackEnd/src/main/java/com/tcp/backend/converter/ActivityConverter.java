@@ -38,8 +38,4 @@ public class ActivityConverter implements BaseConvertor<ActivityDto, Activity> {
         activity.setId(dto.getId());
         return activity;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feature/activity

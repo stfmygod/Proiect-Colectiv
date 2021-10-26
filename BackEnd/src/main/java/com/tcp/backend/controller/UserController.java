@@ -31,10 +31,11 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         LOGGER.info("Get all users");
         return new ResponseEntity<>(
-                userConverter.convertModelsToDtos(userService.getAll()),
+//                userConverter.convertModelsToDtos(userService.getAll()),
+                userService.getAll(),
                 HttpStatus.OK
                 );
     }

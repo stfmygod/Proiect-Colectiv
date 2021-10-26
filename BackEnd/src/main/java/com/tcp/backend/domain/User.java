@@ -1,9 +1,8 @@
 package com.tcp.backend.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -38,6 +37,16 @@ public class User extends BaseEntity {
         if(this.activities != null){
             activities.remove(activity);
             activity.setUser(null);
+        }
+    }
+
+    public void removeGroup(Group group){
+        if(this.groups != null){
+            groups.remove(group);
+            for(User user : group.getUsers())
+            {
+                user.groups.remove(group);
+            }
         }
     }
 }
