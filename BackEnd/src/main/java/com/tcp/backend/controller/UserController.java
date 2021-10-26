@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping(value = "/users")
     public List<User> getAllUsers(){
-        logger.info("Get all usersdasdas");
+        logger.info("Get all users.");
         return service.getAll();
     }
 }
