@@ -1,7 +1,8 @@
 package com.tcp.backend.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -13,10 +14,15 @@ import java.time.LocalTime;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name="activities")
 public class Activity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="user_id")
+//    @JsonIgnoreProperties("activities")
+    @JsonBackReference
     private User user;
     private String name;
     private String description;
