@@ -25,4 +25,8 @@ public class GroupConverter implements BaseConvertor<GroupDto, Group> {
         group.setId(dto.getId());
         return group;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feature/activity

@@ -13,4 +13,8 @@ public class GroupDto {
     private Long id;
     private String name;
     private String code;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feature/activity

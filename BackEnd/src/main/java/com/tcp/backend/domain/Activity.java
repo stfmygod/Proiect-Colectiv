@@ -14,11 +14,15 @@ import java.time.LocalTime;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Table(name="activities")
 public class Activity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="user_id")
+//    @JsonIgnoreProperties("activities")
+    @JsonBackReference
     private User user;
     private String name;
     private String description;
