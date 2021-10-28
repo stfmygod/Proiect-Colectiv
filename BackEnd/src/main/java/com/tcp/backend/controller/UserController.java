@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,12 +35,12 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers() {
         LOGGER.info("Get all users");
         return new ResponseEntity<>(
-//                userConverter.convertModelsToDtos(userService.getAll()),
                 userService.getAll(),
                 HttpStatus.OK
                 );
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "")
     public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
         LOGGER.info("Register method");
@@ -69,6 +70,25 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        LOGGER.info("FindById method");
+        try {
+            User user = userService.findById(id);
+            UserDto userDto = userConverter.convertModelToDto(user);
+
+            return new ResponseEntity<>(
+                    userDto,
+                    HttpStatus.OK
+            );
+        } catch (CustomException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "")
     public ResponseEntity<?> login(@RequestParam String email,
                                       @RequestParam String password) {
