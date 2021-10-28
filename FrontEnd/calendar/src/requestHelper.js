@@ -1,6 +1,9 @@
 import axios from "axios";
-import { apiConfig } from "../../settings";
 import Exception from "./exceptions/genericException";
+
+const apiConfig = {
+    apiUrl: "http://localhost:8080/api",
+};
 
 const buildQuery = (params) =>
     Object.keys(params)
@@ -61,7 +64,7 @@ const post = (url, data, config = {}) => {
 
 const get = (url, config = {}) => {
     let { query, ...restConfig } = config;
-
+    console.log(config);
     config = addHeaders(restConfig);
     query = query ? buildQuery(query) : "";
 
