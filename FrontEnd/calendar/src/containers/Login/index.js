@@ -3,6 +3,7 @@ import { Form, Card, Button } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useHistory } from "react-router-dom";
+import requestHalper from "../../requestHelper";
 
 const styles = {
     pageWrapper: {
@@ -39,9 +40,12 @@ const Login = () => {
     });
 
     const handleSubmit = (values) => {
-        localStorage.setItem("user", true);
-        history.push("/home");
-        document.location.reload();
+        requestHalper
+            .get("/users", { query: { email: values.email, password: values.pass } })
+            .then((res) => console.log(res));
+        // localStorage.setItem("user", true);
+        // history.push("/home");
+        // document.location.reload();
     };
 
     return (
