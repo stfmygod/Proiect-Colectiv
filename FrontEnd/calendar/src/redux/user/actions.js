@@ -1,9 +1,9 @@
 import { LOG_IN, LOG_OUT } from "./types";
 
-export const logIn = (payload) => {
+export const logIn = (data) => {
     return {
         type: LOG_IN,
-        payload,
+        payload: data,
     };
 };
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Card, Button, Col, Row } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { useHistory } from "react-router-dom";
 
 const styles = {
     pageWrapper: {
@@ -29,6 +30,8 @@ const styles = {
 };
 
 const Register = () => {
+    const history = useHistory();
+
     const schema = yup.object().shape({
         firstName: yup.string().required("First name is required"),
         lastName: yup.string().required("Last name is required"),
@@ -54,7 +57,9 @@ const Register = () => {
     });
 
     const handleSubmit = (values) => {
-        console.log(values);
+        localStorage.setItem("user", true);
+        history.push("/home");
+        document.location.reload();
     };
 
     return (

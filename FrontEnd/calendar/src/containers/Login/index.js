@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Card, Button } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { useHistory } from "react-router-dom";
 
 const styles = {
     pageWrapper: {
@@ -30,13 +31,17 @@ const styles = {
 };
 
 const Login = () => {
+    const history = useHistory();
+
     const schema = yup.object().shape({
         email: yup.string().required("Email is required").email("Not a valid email"),
         pass: yup.string().required("Password is required"),
     });
 
     const handleSubmit = (values) => {
-        console.log(values);
+        localStorage.setItem("user", true);
+        history.push("/home");
+        document.location.reload();
     };
 
     return (
