@@ -64,7 +64,6 @@ const post = (url, data, config = {}) => {
 
 const get = (url, config = {}) => {
     let { query, ...restConfig } = config;
-    console.log(config);
     config = addHeaders(restConfig);
     query = query ? buildQuery(query) : "";
 

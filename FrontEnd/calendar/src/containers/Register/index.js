@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Card, Button, Col, Row } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useHistory } from "react-router-dom";
+import requestHalper from "../../requestHelper";
 
 const styles = {
     pageWrapper: {
@@ -27,9 +28,12 @@ const styles = {
         width: "30%",
         minWidth: "425px",
     },
+    errorText: { color: "red" },
 };
 
 const Register = () => {
+    const [errorString, setErrorString] = useState("");
+
     const history = useHistory();
 
     const schema = yup.object().shape({
@@ -57,9 +61,23 @@ const Register = () => {
     });
 
     const handleSubmit = (values) => {
-        localStorage.setItem("user", true);
-        history.push("/home");
-        document.location.reload();
+        requestHalper
+            .post("/users", {
+                email: values.email,
+                password: values.pass,
+                username: values.username,
+                firstName: values.firstName,
+                lastName: values.lastName,
+            })
+            .then((res) => res.data)
+            .then((res) => {
+                localStorage.setItem("user", JSON.stringify(res));
+                history.push("/home");
+                document.location.reload();
+            })
+            .catch((e) => {
+                setErrorString(e.response.data);
+            });
     };
 
     return (
@@ -67,6 +85,11 @@ const Register = () => {
             <Card>
                 <Card.Body style={styles.card}>
                     <h2 className="mb-4">Register</h2>
+                    {errorString && (
+                        <p style={styles.errorText} className="mb-4">
+                            {errorString}
+                        </p>
+                    )}
                     <Formik
                         validationSchema={schema}
                         validateOnChange={false}

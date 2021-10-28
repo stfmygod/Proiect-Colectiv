@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Card, Button } from "react-bootstrap";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -29,9 +29,12 @@ const styles = {
         width: "100%",
         padding: "0px 20px 0px 20px",
     },
+    errorText: { color: "red" },
 };
 
 const Login = () => {
+    const [errorString, setErrorString] = useState("");
+
     const history = useHistory();
 
     const schema = yup.object().shape({
@@ -42,10 +45,15 @@ const Login = () => {
     const handleSubmit = (values) => {
         requestHalper
             .get("/users", { query: { email: values.email, password: values.pass } })
-            .then((res) => console.log(res));
-        // localStorage.setItem("user", true);
-        // history.push("/home");
-        // document.location.reload();
+            .then((res) => res.data)
+            .then((res) => {
+                localStorage.setItem("user", JSON.stringify(res));
+                history.push("/home");
+                document.location.reload();
+            })
+            .catch((e) => {
+                setErrorString(e.response.data);
+            });
     };
 
     return (
@@ -53,6 +61,11 @@ const Login = () => {
             <Card>
                 <Card.Body style={styles.card}>
                     <h2 className="mb-4">Log in</h2>
+                    {errorString && (
+                        <p style={styles.errorText} className="mb-4">
+                            {errorString}
+                        </p>
+                    )}
                     <Formik
                         validationSchema={schema}
                         validateOnChange={false}
