@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,11 @@ public class ActivityService {
         {
             throw new Exception("Could not delete the activity with id:" + id);
         }
+    }
+
+    public List<Activity> getAllByDate(LocalDate date)
+    {
+        return activityRepository.findAllByDate(date);
     }
 
 }

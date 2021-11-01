@@ -22,4 +22,12 @@ public class Group extends BaseEntity {
     @JsonIgnoreProperties("groups")
     @ManyToMany(mappedBy = "groups")
     private List<User> users;
+
+    public void removeGroup(){
+        if(this.users != null)
+        {
+            for (User user: users)
+                user.getGroups().remove(this);
+        }
+    }
 }

@@ -40,12 +40,11 @@ public class User extends BaseEntity {
         }
     }
 
-    public void removeGroup(Group group){
+    public void removeUser(){
         if(this.groups != null){
-            groups.remove(group);
-            for(User user : group.getUsers())
+            for(Group group : groups)
             {
-                user.groups.remove(group);
+                group.getUsers().remove(this);
             }
         }
     }

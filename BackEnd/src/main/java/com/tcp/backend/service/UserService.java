@@ -32,6 +32,8 @@ public class UserService {
 
     public void delete(long id) {
         try {
+            User user = userRepository.getById(id);
+            user.removeUser();
             userRepository.deleteById(id);
         } catch (Exception e) {
             throw new CustomException(String.format("Could not delete the user with id = %d", id));

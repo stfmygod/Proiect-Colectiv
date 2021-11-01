@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,16 @@ public class ActivityController {
         LOGGER.info("Get all activities.");
         return new ResponseEntity<>(
                 activityConverter.convertModelsToDtos(activityService.getAll()),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping(value = "/{date}")
+    public ResponseEntity<List<ActivityDto>> getAllActivitiesByDate(@PathVariable String date){
+        LOGGER.info("Get all activities by date.");
+        LocalDate localDate = LocalDate.parse(date);
+        return new ResponseEntity<>(
+                activityConverter.convertModelsToDtos(activityService.getAllByDate(localDate)),
                 HttpStatus.OK
         );
     }

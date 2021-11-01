@@ -31,7 +31,7 @@ public class GroupService {
     public void delete(long id){
         try{
             Group group = groupRepository.getById(id);
-            group.getUsers().forEach(user -> user.removeGroup(group));
+            group.removeGroup();
             groupRepository.deleteById(id);
         } catch(Exception e){
             throw new CustomException(String.format("Could not delete the group with id = %d", id));
