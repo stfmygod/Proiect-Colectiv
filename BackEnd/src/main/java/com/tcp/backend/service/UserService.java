@@ -25,8 +25,13 @@ public class UserService {
 
     @Transactional
     public User update(User user) {
-        //WIP
         User updatedUser = userRepository.findById(user.getId()).orElseThrow();
+        updatedUser.setEmail(user.getEmail());
+        updatedUser.setUsername(user.getUsername());
+        updatedUser.setPassword(user.getPassword());
+        updatedUser.setFirstName(user.getFirstName());
+        updatedUser.setLastName(user.getLastName());
+
         return updatedUser;
     }
 

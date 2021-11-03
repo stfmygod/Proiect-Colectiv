@@ -20,7 +20,7 @@ public class User extends BaseEntity {
     private String password;
     private String firstName;
     private String lastName;
-//    @JsonIgnoreProperties("user")
+
     @JsonManagedReference
     @OneToMany(mappedBy = "user", targetEntity = Activity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
     private List<Activity> activities;
