@@ -1,12 +1,9 @@
 import { LOG_IN, LOG_OUT } from "./types";
 
-export const logIn = (data, token) => {
+export const logIn = (data) => {
     return {
         type: LOG_IN,
-        payload: {
-            data,
-            token,
-        },
+        payload: data,
     };
 };
 

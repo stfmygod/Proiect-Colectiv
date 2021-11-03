@@ -1,8 +1,9 @@
 import axios from "axios";
-import btoa from "btoa";
-import { apiConfig } from "../../settings";
 import Exception from "./exceptions/genericException";
-import { getToken } from "./utils";
+
+const apiConfig = {
+    apiUrl: "http://localhost:8080/api",
+};
 
 const buildQuery = (params) =>
     Object.keys(params)
@@ -12,23 +13,23 @@ const buildQuery = (params) =>
         }, [])
         .join("&");
 
-const getAuthHeader = () => {
-    const token = getToken().get("idToken");
+// const getAuthHeader = () => {
+//     const token = getToken().get("idToken");
 
-    if (!token)
-        return {
-            Authorization: "Basic " + btoa(apiConfig.appToken),
-        };
+//     if (!token)
+//         return {
+//             Authorization: "Basic " + btoa(apiConfig.appToken),
+//         };
 
-    return {
-        Authorization: "Basic " + btoa(token + ":"),
-    };
-};
+//     return {
+//         Authorization: "Basic " + btoa(token + ":"),
+//     };
+// };
 
 const getDefaultHeaders = () => ({
     headers: {
         "Content-Type": "application/json",
-        ...getAuthHeader(),
+        // ...getAuthHeader(),
     },
 });
 
@@ -63,7 +64,6 @@ const post = (url, data, config = {}) => {
 
 const get = (url, config = {}) => {
     let { query, ...restConfig } = config;
-
     config = addHeaders(restConfig);
     query = query ? buildQuery(query) : "";
 

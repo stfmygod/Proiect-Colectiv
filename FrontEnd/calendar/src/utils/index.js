@@ -1,6 +1,6 @@
 export function getToken() {
     try {
-        const idToken = localStorage.getItem("token");
+        const idToken = localStorage.getItem("user");
         return new Map({ idToken });
     } catch (err) {
         clearToken();
@@ -9,5 +9,5 @@ export function getToken() {
 }
 
 export function clearToken() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("user");
 }

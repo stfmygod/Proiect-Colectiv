@@ -41,6 +41,16 @@ public class UserService {
 
     }
 
+    public User findById(long id) throws CustomException{
+        Optional<User> optional = userRepository.findById(id);
+
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            throw new CustomException(String.format("Could not find the user with id = %d", id));
+        }
+    }
+
     public User login(String email, String password) throws CustomException{
         Optional<User> optional = userRepository.findByEmailAndPassword(email, password);
 

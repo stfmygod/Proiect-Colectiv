@@ -1,0 +1,7 @@
+.fc-timegrid-slots tr {
+  height: 5em;
+}
+
+.fc-event-main div {
+  cursor: pointer;
+}

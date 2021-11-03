@@ -7,7 +7,7 @@ import Login from "../containers/Login";
 import { clearToken } from "../utils";
 
 const AppRouter = () => {
-    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
 
     const getNavbarLinks = () =>
         PrivateRoutes.map((elem) => {
@@ -18,7 +18,7 @@ const AppRouter = () => {
 
     return (
         <Router>
-            {token ? (
+            {user ? (
                 <div>
                     <Navbar bg="dark" variant="dark">
                         <Container>
