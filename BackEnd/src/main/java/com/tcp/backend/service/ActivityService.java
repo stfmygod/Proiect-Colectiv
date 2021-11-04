@@ -19,8 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ActivityService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ActivityService.class);
-
     private final ActivityRepository activityRepository;
 
     public List<Activity> getAll(){
@@ -34,7 +32,6 @@ public class ActivityService {
 
     public void delete(Long id) throws Exception {
         try {
-//            LOGGER.info(id.toString());
             activityRepository.getById(id).getUser().removeActivity(activityRepository.getById(id));
             activityRepository.deleteById(id);
         }

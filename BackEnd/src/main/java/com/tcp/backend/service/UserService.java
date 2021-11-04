@@ -1,7 +1,9 @@
 package com.tcp.backend.service;
 
+import com.tcp.backend.domain.Group;
 import com.tcp.backend.domain.User;
 import com.tcp.backend.exception.CustomException;
+import com.tcp.backend.repository.GroupRepository;
 import com.tcp.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
 
     public List<User> getAll(){
         return userRepository.findAll();
@@ -25,7 +28,7 @@ public class UserService {
 
     @Transactional
     public User update(User user) {
-        User updatedUser = userRepository.findById(user.getId()).orElseThrow();
+        User updatedUser = userRepository.findById(user.getId()).orElseThrow(() -> new CustomException(String.format("There is no user with id = %d", user.getId())));
         updatedUser.setEmail(user.getEmail());
         updatedUser.setUsername(user.getUsername());
         updatedUser.setPassword(user.getPassword());
@@ -63,5 +66,20 @@ public class UserService {
             return optional.get();
         }
         throw new CustomException("Email and password combination do not match!");
+    }
+
+    public User addGroup(User user, Long groupId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new CustomException(String.format("There is no group with id = %d", groupId)));
+        User newUser = userRepository.findById((user.getId())).orElseThrow(() -> new CustomException(String.format("There is no user with id = %d", user.getId())));
+        if(newUser.getGroups().contains(group))
+            throw new CustomException(String.format("There is already a group with id = %d", groupId));
+        newUser.getGroups().add(group);
+        userRepository.save(newUser);
+        return newUser;
+    }
+
+    public List<Group> getGroups(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(String.format("There is no user with id = %d", userId)));
+        return user.getGroups();
     }
 }
