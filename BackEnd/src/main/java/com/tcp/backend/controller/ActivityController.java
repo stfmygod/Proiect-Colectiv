@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -33,12 +34,14 @@ public class ActivityController {
         );
     }
 
-    @GetMapping(value = "/{date}")
-    public ResponseEntity<List<ActivityDto>> getAllActivitiesByDate(@PathVariable String date){
+    @GetMapping(value = "/params")
+    public ResponseEntity<?> getAllActivitiesByDate(@RequestParam Map<String, String> params){
         LOGGER.info("Get all activities by date.");
-        LocalDate localDate = LocalDate.parse(date);
+        Long id = Long.parseLong(params.get("id"));
+        LocalDate localStartDate = LocalDate.parse(params.get("startDate"));
+        LocalDate localEndDate = LocalDate.parse(params.get("endDate"));
         return new ResponseEntity<>(
-                activityConverter.convertModelsToDtos(activityService.getAllByDate(localDate)),
+                activityConverter.convertModelsToDtos(activityService.getAllByDate(localStartDate, localEndDate, id)),
                 HttpStatus.OK
         );
     }

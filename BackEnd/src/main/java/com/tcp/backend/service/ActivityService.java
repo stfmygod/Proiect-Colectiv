@@ -41,9 +41,9 @@ public class ActivityService {
         }
     }
 
-    public List<Activity> getAllByDate(LocalDate date)
+    public List<Activity> getAllByDate(LocalDate startDate, LocalDate endDate, Long id)
     {
-        return activityRepository.findAllByDate(date);
+        return activityRepository.findAllByUserAndDate(id, startDate, endDate);
     }
 
 }
