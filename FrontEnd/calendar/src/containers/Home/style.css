@@ -1,7 +1,11 @@
 .fc-timegrid-slots tr {
-  height: 5em;
+    height: 5em;
 }
 
 .fc-event-main div {
-  cursor: pointer;
+    cursor: pointer;
+}
+
+.react-time-picker__wrapper {
+    border: none;
 }
