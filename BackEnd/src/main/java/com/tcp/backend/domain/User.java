@@ -15,6 +15,7 @@ import java.util.List;
 @Builder
 @Table(name = "users")
 public class User extends BaseEntity {
+    @Column(unique=true)
     private String email;
     private String username;
     private String password;
@@ -24,7 +25,8 @@ public class User extends BaseEntity {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", targetEntity = Activity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
     private List<Activity> activities;
-    @ManyToMany
+
+    @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("users")
     @JoinTable(
             name = "users_groups",
@@ -42,8 +44,7 @@ public class User extends BaseEntity {
 
     public void removeUser(){
         if(this.groups != null){
-            for(Group group : groups)
-            {
+            for(Group group : groups) {
                 group.getUsers().remove(this);
             }
         }

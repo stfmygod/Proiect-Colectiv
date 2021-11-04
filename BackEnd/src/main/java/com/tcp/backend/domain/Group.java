@@ -3,10 +3,8 @@ package com.tcp.backend.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.PreRemove;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,11 +19,10 @@ public class Group extends BaseEntity {
     private String code;
     @JsonIgnoreProperties("groups")
     @ManyToMany(mappedBy = "groups")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     public void removeGroup(){
-        if(this.users != null)
-        {
+        if(this.users != null) {
             for (User user: users)
                 user.getGroups().remove(this);
         }

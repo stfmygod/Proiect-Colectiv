@@ -24,11 +24,13 @@ public class GroupService {
 
     @Transactional
     public Group update(Group group){
-        Group updatedGroupList = groupRepository.findById(group.getId()).orElseThrow();
-        return updatedGroupList;
+        Group updatedGroup = groupRepository.findById(group.getId()).orElseThrow(() -> new CustomException(String.format("There is no group with id = %d", group.getId())));
+        updatedGroup.setName(group.getName());
+        updatedGroup.setCode(group.getCode());
+        return updatedGroup;
     }
 
-    public void delete(long id){
+    public void delete(Long id){
         try{
             Group group = groupRepository.getById(id);
             group.removeGroup();
@@ -37,5 +39,4 @@ public class GroupService {
             throw new CustomException(String.format("Could not delete the group with id = %d", id));
         }
     }
-
 }
