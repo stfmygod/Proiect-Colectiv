@@ -23,6 +23,8 @@ const AddEvent = (props) => {
     const [startDate, setStartDate] = useState(new Date());
     const [startTime, setStartTime] = useState(null);
     const [stopTime, setStopTime] = useState(null);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
 
     return (
         <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -37,6 +39,11 @@ const AddEvent = (props) => {
                     padding: "30px 170px 30px 170px",
                 }}
             >
+                <Form.Group>
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control  value={title} onChange={(event) => setTitle(event.target.value)} className="mb-3"/>
+                </Form.Group>
+
                 <DatePicker
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
@@ -47,6 +54,12 @@ const AddEvent = (props) => {
 
                 <Form.Label>End hour</Form.Label>
                 <TimePicker onChange={setStopTime} value={stopTime} className="mb-3 form-control" />
+
+                <Form.Group>
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control  value={description} onChange={(event) => setDescription(event.target.value)} className="mb-3"/>
+                </Form.Group>   
+
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.onHide}>

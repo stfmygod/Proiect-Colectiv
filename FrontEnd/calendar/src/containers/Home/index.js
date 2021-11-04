@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import requestHalper from "../../requestHelper";
 import AddEvent from "./addEvent";
+import moment from "moment";
 import "./style.css";
 
 const styles = {
@@ -13,8 +15,13 @@ const styles = {
 
 const Home = () => {
     const [showAddEvent, setShowAddEvent] = useState(false);
+    const [events, setEvents] = useState([]);
 
     const user = useSelector((state) => state.user);
+
+    useEffect(() => {
+        requestHalper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
+    }, []);
 
     return (
         <div style={styles.pageWrapper}>
@@ -36,7 +43,11 @@ const Home = () => {
                 allDaySlot={false}
                 plugins={[timeGridPlugin]}
                 initialView="timeGridWeek"
-                events={[]}
+                events={events.map((event) => ({
+                    title: event.name,
+                    start: new Date(moment(`${event.date} ${event.startHour}`, "YYYY-MM-DD hh:mm:ss").format("MMM DD, YYYY HH:MM")),
+                    end: new Date(moment(`${event.date} ${event.endHour}`, "YYYY-MM-DD hh:mm:ss").format("MMM DD, YYYY HH:MM")),
+                }))}
             />
             <AddEvent
                 show={showAddEvent}
