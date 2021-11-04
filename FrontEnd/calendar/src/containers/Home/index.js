@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import AddEvent from "./addEvent";
 import "./style.css";
 
 const styles = {
@@ -14,7 +15,6 @@ const Home = () => {
     const [showAddEvent, setShowAddEvent] = useState(false);
 
     const user = useSelector((state) => state.user);
-    console.log("in home", user);
 
     return (
         <div style={styles.pageWrapper}>
@@ -37,6 +37,13 @@ const Home = () => {
                 plugins={[timeGridPlugin]}
                 initialView="timeGridWeek"
                 events={[]}
+            />
+            <AddEvent
+                show={showAddEvent}
+                onHide={() => setShowAddEvent(false)}
+                onAdd={(startDate, startTime, stopTime) => {
+                    setShowAddEvent(false);
+                }}
             />
         </div>
     );
