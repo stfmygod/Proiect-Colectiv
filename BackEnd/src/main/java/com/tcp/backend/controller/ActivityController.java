@@ -47,6 +47,18 @@ public class ActivityController {
         );
     }
 
+    @GetMapping(value = "/group/params")
+    public ResponseEntity<?> getGroupActivitiesByDate(@RequestParam Map<String, String> params){
+        LOGGER.info("Get group activities by date.");
+        String code = params.get("code");
+        LocalDate localStartDate = LocalDate.parse(params.get("startDate"));
+        LocalDate localEndDate = LocalDate.parse(params.get("endDate"));
+        return new ResponseEntity<>(
+                activityConverter.convertModelsToDtos(activityService.getGroupByDate(code, localStartDate, localEndDate)),
+                HttpStatus.OK
+        );
+    }
+
     @PostMapping(value = "")
     public ResponseEntity<ActivityDto> addUser(@RequestBody ActivityDto activityDto)
     {

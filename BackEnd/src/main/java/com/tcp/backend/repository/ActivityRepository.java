@@ -12,4 +12,7 @@ import java.util.List;
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
     @Query("select a from Activity a where a.user.id = ?1 and a.date >= ?2 and a.date <= ?3")
     List<Activity> findAllByUserAndDate(Long id, LocalDate startDate, LocalDate endDate);
+
+    @Query("select a from Activity a where exists(select g from a.user.groups g where g.code = ?1) and a.date >= ?2 and a.date <= ?3")
+    List<Activity> findAllByGroupAndDate(String code, LocalDate startDate, LocalDate endDate);
 }

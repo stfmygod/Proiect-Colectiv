@@ -46,4 +46,8 @@ public class ActivityService {
         return activityRepository.findAllByUserAndDate(id, startDate, endDate);
     }
 
+    public List<Activity> getGroupByDate(String code, LocalDate startDate, LocalDate endDate){
+        return activityRepository.findAllByGroupAndDate(code, startDate, endDate);
+    }
+
 }
