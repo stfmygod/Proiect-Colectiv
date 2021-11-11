@@ -26,6 +26,14 @@ const AddEvent = (props) => {
     const [title, setTitle] = useState(null);
     const [description, setDescription] = useState(null);
 
+    const clearData = () => {
+        setStartTime(null)
+        setStopTime(null)
+        setDescription(null)
+        setStartDate(new Date())
+        setTitle(null)
+    }
+
     return (
         <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header>
@@ -62,7 +70,7 @@ const AddEvent = (props) => {
 
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={props.onHide}>
+                <Button variant="secondary" onClick={() => {props.onHide(); clearData()}}>
                     Close
                 </Button>
                 <Button onClick={() => props.onAdd({title, description, startDate, startTime, stopTime})}>Add event</Button>
