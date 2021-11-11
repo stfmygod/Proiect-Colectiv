@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import requestHalper from "../../requestHelper";
+import requestHelper from "../../requestHelper";
 import AddEvent from "./addEvent";
 import moment from "moment";
 import "./style.css";
@@ -17,11 +17,24 @@ const Home = () => {
     const [showAddEvent, setShowAddEvent] = useState(false);
     const [events, setEvents] = useState([]);
 
-    const user = useSelector((state) => state.user);
+    const user = localStorage.getItem("user");
 
     useEffect(() => {
-        requestHalper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
+        requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
     }, []);
+
+    const handleAddRequest = (values) => {
+        try{
+            const userObj = JSON.parse(user);
+            console.log(values)
+            requestHelper.post("/activities", {userId: userObj.id, name: values.title, description: values.description, date: moment(values.startDate).format('YYYY-MM-DD'), startHour: values.startTime, endHour: values.stopTime})
+                .then(() => {
+                    requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
+                });
+        }catch(err) {
+            console.log(err);
+        }
+    }
 
     return (
         <div style={styles.pageWrapper}>
@@ -52,7 +65,8 @@ const Home = () => {
             <AddEvent
                 show={showAddEvent}
                 onHide={() => setShowAddEvent(false)}
-                onAdd={(startDate, startTime, stopTime) => {
+                onAdd={(values) => {
+                    handleAddRequest(values);
                     setShowAddEvent(false);
                 }}
             />

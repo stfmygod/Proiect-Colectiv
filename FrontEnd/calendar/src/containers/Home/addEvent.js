@@ -23,8 +23,8 @@ const AddEvent = (props) => {
     const [startDate, setStartDate] = useState(new Date());
     const [startTime, setStartTime] = useState(null);
     const [stopTime, setStopTime] = useState(null);
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [title, setTitle] = useState(null);
+    const [description, setDescription] = useState(null);
 
     return (
         <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -36,7 +36,7 @@ const AddEvent = (props) => {
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
-                    padding: "30px 170px 30px 170px",
+                    padding: "30px 120px 30px 120px",
                 }}
             >
                 <Form.Group>
@@ -50,22 +50,22 @@ const AddEvent = (props) => {
                     customInput={<ClickableInput />}
                 />
                 <Form.Label>Start hour</Form.Label>
-                <TimePicker onChange={setStartTime} value={startTime} className="mb-3 form-control" />
+                <TimePicker onChange={setStartTime} value={startTime} className="mb-3 form-control" format="HH:mm"/>
 
                 <Form.Label>End hour</Form.Label>
-                <TimePicker onChange={setStopTime} value={stopTime} className="mb-3 form-control" />
+                <TimePicker onChange={setStopTime} value={stopTime} className="mb-3 form-control" format="HH:mm"/>
 
                 <Form.Group>
                     <Form.Label>Description</Form.Label>
-                    <Form.Control  value={description} onChange={(event) => setDescription(event.target.value)} className="mb-3"/>
-                </Form.Group>   
+                    <Form.Control  as="textarea" value={description} onChange={(event) => setDescription(event.target.value)} className="mb-3"/>
+                </Form.Group>
 
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.onHide}>
                     Close
                 </Button>
-                <Button onClick={() => props.onAdd(startDate, startTime, stopTime)}>Add event</Button>
+                <Button onClick={() => props.onAdd({title, description, startDate, startTime, stopTime})}>Add event</Button>
             </Modal.Footer>
         </Modal>
     );
