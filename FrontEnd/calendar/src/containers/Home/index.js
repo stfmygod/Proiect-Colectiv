@@ -24,17 +24,27 @@ const Home = () => {
     }, []);
 
     const handleAddRequest = (values) => {
-        try{
+        try {
             const userObj = JSON.parse(user);
-            console.log(values)
-            requestHelper.post("/activities", {userId: userObj.id, name: values.title, description: values.description, date: moment(values.startDate).format('YYYY-MM-DD'), startHour: values.startTime, endHour: values.stopTime})
+            console.log(values);
+            requestHelper
+                .post("/activities", {
+                    userId: userObj.id,
+                    name: values.title,
+                    description: values.description,
+                    date: moment(values.startDate).format("YYYY-MM-DD"),
+                    startHour: values.startTime,
+                    endHour: values.stopTime,
+                })
                 .then(() => {
-                    requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
+                    requestHelper
+                        .get("/activities/all", { query: { user: user.id } })
+                        .then((res) => setEvents(res.data));
                 });
-        }catch(err) {
+        } catch (err) {
             console.log(err);
         }
-    }
+    };
 
     return (
         <div style={styles.pageWrapper}>
@@ -56,11 +66,19 @@ const Home = () => {
                 allDaySlot={false}
                 plugins={[timeGridPlugin]}
                 initialView="timeGridWeek"
-                events={events.map((event) => ({
-                    title: event.name,
-                    start: new Date(moment(`${event.date} ${event.startHour}`, "YYYY-MM-DD hh:mm:ss").format("MMM DD, YYYY HH:MM")),
-                    end: new Date(moment(`${event.date} ${event.endHour}`, "YYYY-MM-DD hh:mm:ss").format("MMM DD, YYYY HH:MM")),
-                }))}
+                events={events.map((event) => {
+                    return {
+                        title: event.name,
+                        start: new Date(
+                            moment(`${event.date} ${event.startHour}`, "YYYY-MM-DD HH:mm:ss").format(
+                                "MMM DD, YYYY HH:mm"
+                            )
+                        ),
+                        end: new Date(
+                            moment(`${event.date} ${event.endHour}`, "YYYY-MM-DD HH:mm:ss").format("MMM DD, YYYY HH:mm")
+                        ),
+                    };
+                })}
             />
             <AddEvent
                 show={showAddEvent}

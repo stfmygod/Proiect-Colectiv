@@ -6,6 +6,7 @@
     cursor: pointer;
 }
 
+/* Please don't do this. !important is a really dirty way of doing thing but i was getting desperate :( */
 .react-time-picker__wrapper {
-    border: none;
+    border: none !important;
 }
