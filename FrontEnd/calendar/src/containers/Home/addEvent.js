@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
+import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 import "./style.css";
 
@@ -14,6 +15,11 @@ const styles = {
         justifyContent: "center",
         padding: "30px 120px 30px 120px",
     },
+    deleteButton:{
+        position: "absolute",
+        left: 10,
+        
+    }
 };
 
 const ClickableInput = ({ onClick, ...props }) => (
@@ -25,13 +31,24 @@ const ClickableInput = ({ onClick, ...props }) => (
     </div>
 );
 
-const AddEvent = (props) => {
+const AddEvent = ({isEditing, selectedEvent, onAdd, onDelete, onHide, show}) => {
     const [startDate, setStartDate] = useState(new Date());
     const [startTime, setStartTime] = useState(null);
     const [stopTime, setStopTime] = useState(null);
     const [title, setTitle] = useState(null);
     const [description, setDescription] = useState(null);
     const [showValidation, setShowValidation] = useState(false);
+
+    useEffect( () => {
+        if (isEditing) {
+            setStartTime(selectedEvent.startHour);
+            setStopTime(selectedEvent.endHour);
+            setDescription(selectedEvent.description);
+            setStartDate(new Date(selectedEvent.date));
+            setTitle(selectedEvent.name);
+        }
+        //console.log(selectedEvent)
+    }, [isEditing]) 
 
     const clearData = () => {
         setStartTime(null);
@@ -48,14 +65,33 @@ const AddEvent = (props) => {
         }
 
         setShowValidation(false);
-        props.onAdd({ title, description, startDate, startTime, stopTime });
+        onAdd({ title, description, startDate, startTime, stopTime });
         clearData();
     };
 
+    const getModalTitle = () => {
+        if(isEditing) {
+            return "Update event"
+        }
+        return "Add event"
+
+    }
+
+    const getSaveButtonText = () => {
+        if(isEditing) {
+            return "Save"
+        }
+        return "Add"
+    }
+
+    const handleDelete = () => {
+        onDelete(selectedEvent.id)
+        clearData()
+    }
     return (
-        <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+        <Modal show={show} onHide={() => {setShowValidation(false); onHide()}} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header>
-                <Modal.Title id="contained-modal-title-vcenter">Add event</Modal.Title>
+                <Modal.Title id="contained-modal-title-vcenter"> {getModalTitle()} </Modal.Title>
             </Modal.Header>
             <Modal.Body style={styles.modalBody}>
                 <Form.Group className={"mb-3"}>
@@ -118,13 +154,15 @@ const AddEvent = (props) => {
                 <Button
                     variant="secondary"
                     onClick={() => {
-                        props.onHide();
+                        onHide();
                         clearData();
+                        setShowValidation(false);
                     }}
                 >
                     Close
                 </Button>
-                <Button onClick={handleSubmit}>Add event</Button>
+                <Button onClick={handleSubmit}> {getSaveButtonText()} </Button>
+                {isEditing && <Button onClick={handleDelete} variant="danger" style={styles.deleteButton}> Delete </Button> }
             </Modal.Footer>
         </Modal>
     );

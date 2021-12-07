@@ -15,6 +15,8 @@ const styles = {
 
 const Home = () => {
     const [showAddEvent, setShowAddEvent] = useState(false);
+    const [showEditEvent, setShowEditEvent] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState({});
     const [events, setEvents] = useState([]);
 
     const user = localStorage.getItem("user");
@@ -24,31 +26,40 @@ const Home = () => {
     }, []);
 
     const handleAddRequest = (values) => {
-        try {
+        try{
             const userObj = JSON.parse(user);
-            console.log(values);
-            requestHelper
-                .post("/activities", {
-                    userId: userObj.id,
-                    name: values.title,
-                    description: values.description,
-                    date: moment(values.startDate).format("YYYY-MM-DD"),
-                    startHour: values.startTime,
-                    endHour: values.stopTime,
-                })
+            requestHelper.post("/activities", {userId: userObj.id, name: values.title, description: values.description, date: moment(values.startDate).format('YYYY-MM-DD'), startHour: values.startTime, endHour: values.stopTime})
                 .then(() => {
-                    requestHelper
-                        .get("/activities/all", { query: { user: user.id } })
-                        .then((res) => setEvents(res.data));
+                    requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
                 });
-        } catch (err) {
+        }catch(err) {
             console.log(err);
         }
-    };
+    }
+
+    const handleDeleteEvent = (id) => {
+        try {
+            requestHelper.remove(`/activities/${id}`).then( () => {
+                requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleEditRequest = (values) => {
+        console.log(values);
+        setSelectedEvent({})
+    }
 
     return (
         <div style={styles.pageWrapper}>
             <FullCalendar
+                eventClick={data => {
+                    const newSelectedEvent = events.filter(elem => elem.id == data.event.id)[0];
+                    setSelectedEvent(newSelectedEvent);
+                    setShowEditEvent(true);
+                }}
                 headerToolbar={{
                     left: "title",
                     center: "",
@@ -67,17 +78,12 @@ const Home = () => {
                 plugins={[timeGridPlugin]}
                 initialView="timeGridWeek"
                 events={events.map((event) => {
-                    return {
+                    return ({
+                        id: event.id,
                         title: event.name,
-                        start: new Date(
-                            moment(`${event.date} ${event.startHour}`, "YYYY-MM-DD HH:mm:ss").format(
-                                "MMM DD, YYYY HH:mm"
-                            )
-                        ),
-                        end: new Date(
-                            moment(`${event.date} ${event.endHour}`, "YYYY-MM-DD HH:mm:ss").format("MMM DD, YYYY HH:mm")
-                        ),
-                    };
+                        start: new Date(moment(`${event.date} ${event.startHour}`, "YYYY-MM-DD HH:mm:ss").format("MMM DD, YYYY HH:mm")),
+                        end: new Date(moment(`${event.date} ${event.endHour}`, "YYYY-MM-DD HH:mm:ss").format("MMM DD, YYYY HH:mm")),
+                    })
                 })}
             />
             <AddEvent
@@ -87,6 +93,25 @@ const Home = () => {
                     handleAddRequest(values);
                     setShowAddEvent(false);
                 }}
+            />
+            <AddEvent
+                isEditing={!!selectedEvent.id}
+                selectedEvent={selectedEvent}
+                show={showEditEvent}
+                onHide={() => {
+                    setSelectedEvent({})
+                    setShowEditEvent(false);
+                }}
+                onAdd={(values) => {
+                    handleEditRequest(values);
+                    setShowEditEvent(false);
+                }}
+                onDelete={(id) => {
+                    handleDeleteEvent(id);
+                    setShowEditEvent(false);
+                }
+
+                }
             />
         </div>
     );
