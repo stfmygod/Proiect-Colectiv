@@ -2,7 +2,10 @@ package com.tcp.backend.controller;
 
 import com.tcp.backend.converter.ActivityConverter;
 import com.tcp.backend.domain.Activity;
+import com.tcp.backend.domain.User;
 import com.tcp.backend.dto.ActivityDto;
+import com.tcp.backend.dto.UserDto;
+import com.tcp.backend.exception.CustomException;
 import com.tcp.backend.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -71,6 +74,26 @@ public class ActivityController {
         );
     }
 
+    @PatchMapping()
+    public ResponseEntity<?> updateActivity(@RequestBody ActivityDto activityDto) {
+        LOGGER.info("Updating activity.");
+
+        try{
+            Activity activity = activityService.update(activityConverter.convertDtoToModel(activityDto));
+
+            return new ResponseEntity<>(
+                    activityConverter.convertModelToDto(activity),
+                    HttpStatus.OK
+            );
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage());
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteActivity(@PathVariable Long id)
     {
@@ -86,5 +109,4 @@ public class ActivityController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }
