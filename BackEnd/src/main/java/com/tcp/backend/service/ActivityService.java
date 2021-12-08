@@ -65,4 +65,8 @@ public class ActivityService {
         return activityRepository.findAllByGroupAndDate(code, startDate, endDate);
     }
 
+    public List<Activity> getGroupActivity(String code){
+        return activityRepository.findAllByGroup(code);
+    }
+
 }

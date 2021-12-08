@@ -5,10 +5,12 @@ import { PrivateRoutes, PublicRoutes } from "./routes";
 import Home from "../containers/Home";
 import Login from "../containers/Login";
 import { clearToken } from "../utils";
+import { useHistory } from "react-router-dom";
 
 const AppRouter = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const groups = JSON.parse(localStorage.getItem("groups"));
+    const history = useHistory();
 
     const getNavbarLinks = () =>
         PrivateRoutes.map((elem) => {
@@ -17,7 +19,9 @@ const AppRouter = () => {
     const getPrivateRoutes = () => PrivateRoutes.map((elem) => <Route path={elem.route}>{elem.component}</Route>);
     const getPublicRoutes = () => PublicRoutes.map((elem) => <Route path={elem.route}>{elem.component}</Route>);
 
-    const getGroups = () => groups.map((elem) => <NavDropdown.Item>{elem.name}</NavDropdown.Item>)
+    const getGroups = () => groups.map((elem) => <NavDropdown.Item  href="/group" onClick={() => {
+        localStorage.setItem("selectedGroup", elem.code)
+        }}>{elem.name}</NavDropdown.Item>)
 
     return (
         <Router>
@@ -30,7 +34,7 @@ const AppRouter = () => {
                             <NavDropdown title="Groups" id="basic-nav-dropdown">
                                 {getGroups()}
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Create Groups</NavDropdown.Item>
+                            <NavDropdown.Item>Create Groups</NavDropdown.Item>
                             </NavDropdown>
                             <Nav
                                 onClick={() => {

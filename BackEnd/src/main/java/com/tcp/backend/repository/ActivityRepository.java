@@ -15,4 +15,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     @Query("select a from Activity a where exists(select g from a.user.groups g where g.code = ?1) and a.date >= ?2 and a.date <= ?3")
     List<Activity> findAllByGroupAndDate(String code, LocalDate startDate, LocalDate endDate);
+
+    @Query("select a from Activity a where exists(select g from a.user.groups g where g.code = ?1)")
+    List<Activity> findAllByGroup(String code);
 }

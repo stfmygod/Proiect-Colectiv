@@ -3,7 +3,6 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import requestHelper from "../../requestHelper";
 import moment from "moment";
-import "./style.css";
 
 const styles = {
     pageWrapper: {
@@ -15,11 +14,12 @@ const Group = () => {
     const [events, setEvents] = useState([]);
 
     const user = JSON.parse(localStorage.getItem("user"));
+    const groupCode = localStorage.getItem("selectedGroup");
     
 
     useEffect(() => {
-        requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
-    }, []);
+        requestHelper.get("/activities/group/params", { query: { code: groupCode} }).then((res) => setEvents(res.data));
+    }, [groupCode]);
 
     return (
         <div style={styles.pageWrapper}>
