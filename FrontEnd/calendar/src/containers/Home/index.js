@@ -19,7 +19,8 @@ const Home = () => {
     const [selectedEvent, setSelectedEvent] = useState({});
     const [events, setEvents] = useState([]);
 
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
+    
 
     useEffect(() => {
         requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
