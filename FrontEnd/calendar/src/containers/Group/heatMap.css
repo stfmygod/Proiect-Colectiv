@@ -1,0 +1,8 @@
+/* 0 group participants */
+.react-calendar-heatmap .color-scale-1 { fill: #44a340; } 
+/* >20% group participants */
+.react-calendar-heatmap .color-scale-2 { fill: #F5BB00; }
+/* 20%-30% group participants */
+.react-calendar-heatmap .color-scale-3 { fill: #D76A03; }
+/* >50% group participants */
+.react-calendar-heatmap .color-scale-4 { fill: #BF3100; }
