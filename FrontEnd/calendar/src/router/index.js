@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 
 const AppRouter = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    const groups = JSON.parse(localStorage.getItem("groups"));
+    const groups = JSON.parse(localStorage.getItem("groups")) || [];
     const history = useHistory();
 
     const getNavbarLinks = () =>
