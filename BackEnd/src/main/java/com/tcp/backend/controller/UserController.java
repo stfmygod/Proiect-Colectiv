@@ -2,7 +2,6 @@ package com.tcp.backend.controller;
 
 import com.tcp.backend.converter.GroupConverter;
 import com.tcp.backend.converter.UserConverter;
-import com.tcp.backend.domain.Group;
 import com.tcp.backend.domain.User;
 import com.tcp.backend.dto.GroupDto;
 import com.tcp.backend.dto.UserDto;
@@ -114,14 +113,14 @@ public class UserController {
         }
     }
 
-    @PatchMapping(value = "/add-group/{id}")
-    public ResponseEntity<?> addUserInGroup(@RequestBody UserDto userDto, @PathVariable Long id) {
+    @PutMapping(value = "/add-group/{id}")
+    public ResponseEntity<?> addUserInGroup(@RequestBody Long userId, @PathVariable Long id) {
         LOGGER.info("Add user in group");
 
         try {
-            User user = userService.addGroup(userConverter.convertDtoToModel(userDto), id);
+            User user = userService.addGroup(userId, id);
             return new ResponseEntity<>(
-                    userDto,
+                    userConverter.convertModelToDto(user),
                     HttpStatus.OK
             );
         } catch (CustomException e) {

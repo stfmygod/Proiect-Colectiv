@@ -19,6 +19,7 @@ public class GroupService {
     }
 
     public Group add(Group group){
+        group.setCode("abcd");
         return groupRepository.save(group);
     }
 
