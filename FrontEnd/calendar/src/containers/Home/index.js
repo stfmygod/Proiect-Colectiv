@@ -20,7 +20,7 @@ const Home = () => {
     const [selectedEvent, setSelectedEvent] = useState({});
     const [events, setEvents] = useState([]);
 
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
     
 
     useEffect(() => {
@@ -29,8 +29,7 @@ const Home = () => {
 
     const handleAddRequest = (values) => {
         try{
-            const userObj = JSON.parse(user);
-            requestHelper.post("/activities", {userId: userObj.id, name: values.title, description: values.description, date: moment(values.startDate).format('YYYY-MM-DD'), startHour: values.startTime, endHour: values.stopTime})
+            requestHelper.post("/activities", {userId: user.id, name: values.title, description: values.description, date: moment(values.startDate).format('YYYY-MM-DD'), startHour: values.startTime, endHour: values.stopTime})
                 .then(() => {
                     requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
                 });
