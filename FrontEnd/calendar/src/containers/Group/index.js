@@ -3,6 +3,7 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import requestHelper from "../../requestHelper";
 import moment from "moment";
+import AddGroup from "./addGroup";
 
 const styles = {
     pageWrapper: {
@@ -49,6 +50,7 @@ const Group = () => {
         requestHelper.get("/activities/group/params", { query: { code: groupCode} }).then((res) => setEvents(res.data));
     }, [groupCode]);
 
+    console.log("group idex");
     return (
         <div style={styles.pageWrapper}>
             <FullCalendar
@@ -70,6 +72,8 @@ const Group = () => {
                     })
                 })}
             />
+
+            <AddGroup />
         </div>
     );
 };

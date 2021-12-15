@@ -6,6 +6,7 @@ import requestHelper from "../../requestHelper";
 import AddEvent from "./addEvent";
 import moment from "moment";
 import "./style.css";
+import AddGroup from "../Group/addGroup";
 
 const styles = {
     pageWrapper: {
@@ -114,6 +115,7 @@ const Home = () => {
 
                 }
             />
+            <AddGroup />
         </div>
     );
 };

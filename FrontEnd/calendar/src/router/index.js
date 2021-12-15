@@ -5,12 +5,13 @@ import { PrivateRoutes, PublicRoutes } from "./routes";
 import Home from "../containers/Home";
 import Login from "../containers/Login";
 import { clearToken } from "../utils";
-import { useHistory } from "react-router-dom";
+import {changeShowAddGroup} from "../redux/app/actions";
+import {useDispatch} from "react-redux";
 
 const AppRouter = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const groups = JSON.parse(localStorage.getItem("groups")) || [];
-    const history = useHistory();
+    const dispatch = useDispatch();
 
     const getNavbarLinks = () =>
         PrivateRoutes.map((elem) => {
@@ -31,11 +32,17 @@ const AppRouter = () => {
                         <Container>
                             <Navbar.Brand href="home">Calendar</Navbar.Brand>
                             <Nav className="me-auto">{getNavbarLinks()}</Nav>
+
                             <NavDropdown title="Groups" id="basic-nav-dropdown">
                                 {getGroups()}
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item>Create Groups</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item onClick={() => {
+                                    dispatch(changeShowAddGroup(true))
+                                }}>
+                                    Create Group
+                                </NavDropdown.Item>
                             </NavDropdown>
+
                             <Nav
                                 onClick={() => {
                                     clearToken();
