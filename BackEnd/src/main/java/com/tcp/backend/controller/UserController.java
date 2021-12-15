@@ -113,12 +113,12 @@ public class UserController {
         }
     }
 
-    @PutMapping(value = "/add-group/{id}")
-    public ResponseEntity<?> addUserInGroup(@RequestBody Long userId, @PathVariable Long id) {
+    @PutMapping(value = "/add-group")
+    public ResponseEntity<?> addUserInGroup(@RequestParam Long userId, @RequestParam Long groupId) {
         LOGGER.info("Add user in group");
 
         try {
-            User user = userService.addGroup(userId, id);
+            User user = userService.addGroup(userId, groupId);
             return new ResponseEntity<>(
                     userConverter.convertModelToDto(user),
                     HttpStatus.OK

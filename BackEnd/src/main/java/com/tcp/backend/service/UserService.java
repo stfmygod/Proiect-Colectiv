@@ -17,6 +17,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
+    private final GroupService groupService;
 
     public List<User> getAll(){
         return userRepository.findAll();
@@ -76,7 +77,9 @@ public class UserService {
             throw new CustomException(String.format("There is already a group with id = %d", groupId));
         }
         user.getGroups().add(group);
-
+        group.getUsers().add(user);
+        update(user);
+        groupService.update(group);
         return user;
     }
 
