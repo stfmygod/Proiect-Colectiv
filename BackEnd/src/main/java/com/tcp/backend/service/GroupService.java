@@ -3,6 +3,7 @@ package com.tcp.backend.service;
 import com.tcp.backend.domain.Group;
 import com.tcp.backend.exception.CustomException;
 import com.tcp.backend.repository.GroupRepository;
+import com.tcp.backend.utils.RandomCodeGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,15 @@ public class GroupService {
     }
 
     public Group add(Group group){
-        group.setCode("abcd");
+        while (true) {
+            String code = RandomCodeGenerator.codeGenerator();
+
+            if (groupRepository.findByCode(code).isEmpty()) {
+                group.setCode(code);
+                break;
+            }
+        }
+
         return groupRepository.save(group);
     }
 

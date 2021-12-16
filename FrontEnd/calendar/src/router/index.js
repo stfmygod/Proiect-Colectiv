@@ -41,6 +41,9 @@ const AppRouter = () => {
                                 }}>
                                     Create Group
                                 </NavDropdown.Item>
+                                <NavDropdown.Item>
+                                    Join Group
+                                </NavDropdown.Item>
                             </NavDropdown>
 
                             <Nav

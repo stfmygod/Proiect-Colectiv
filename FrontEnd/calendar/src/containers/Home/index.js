@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import requestHelper from "../../requestHelper";
@@ -57,7 +56,7 @@ const Home = () => {
         <div style={styles.pageWrapper}>
             <FullCalendar
                 eventClick={data => {
-                    const newSelectedEvent = events.filter(elem => elem.id == data.event.id)[0];
+                    const newSelectedEvent = events.filter(elem => elem.id === data.event.id)[0];
                     setSelectedEvent(newSelectedEvent);
                     setShowEditEvent(true);
                 }}

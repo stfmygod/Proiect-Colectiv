@@ -113,7 +113,7 @@ public class UserController {
         }
     }
 
-    @PutMapping(value = "/add-group")
+    @PatchMapping(value = "/add-group")
     public ResponseEntity<?> addUserInGroup(@RequestParam Long userId, @RequestParam Long groupId) {
         LOGGER.info("Add user in group");
 

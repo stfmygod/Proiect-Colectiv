@@ -76,12 +76,19 @@ const remove = (url, config = {}) => {
     return axios.delete(apiConfig.apiUrl + url, config).then((response) => handleResponse(response));
 };
 
+const patch = (url, data, config = {}) => {
+    config = addHeaders(config);
+
+    return axios.patch(apiConfig.apiUrl + url, data, config).then((response) => handleResponse(response, true));
+};
+
 const requestHalper = {
     put,
     post,
     get,
     remove,
     buildQuery,
+    patch,
 };
 
 export default requestHalper;

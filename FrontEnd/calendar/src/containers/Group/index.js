@@ -4,6 +4,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import requestHelper from "../../requestHelper";
 import moment from "moment";
 import AddGroup from "./addGroup";
+import "./style.css";
 
 const styles = {
     pageWrapper: {
@@ -13,25 +14,26 @@ const styles = {
 
 const Group = () => {
     const [events, setEvents] = useState([]);
-    console.log(events)
+    // console.log(events)
 
     const user = JSON.parse(localStorage.getItem("user"));
     const groupCode = localStorage.getItem("selectedGroup");
+    const group = JSON.parse(localStorage.getItem("groups")).filter(e => e.code == groupCode);
 
     //collecting the number of events in every hour
-    var eventsDict = {}
-    for (var [indx, event] of Object.entries(events)){
+    let eventsDict = {}
+    for (let [indx, event] of Object.entries(events)){
         // intersection of events 
         // key: hour
         // value: number of events in that hour (interval: (key:key+1))
         const start = new Date(moment(`${event.date} ${event.startHour}`, "YYYY-MM-DD HH:mm:ss").format("MMM DD, YYYY HH:mm"));
-        var hours = event.endHour.split(':')[0] - event.startHour.split(':')[0];
+        let hours = event.endHour.split(':')[0] - event.startHour.split(':')[0];
         const startHour = new Date(0);
         startHour.setHours(event.startHour.split(':')[0])
-        for (var i=0; i<hours; i++){
+        for (let i=0; i<hours; i++){
             const oneH = new Date(0);
             oneH.setHours(i);
-            var currentHour = Number(startHour.toTimeString().split(" ")[0].split(":")[0]) + Number(oneH.toTimeString().split(" ")[0].split(":")[0]);
+            let currentHour = Number(startHour.toTimeString().split(" ")[0].split(":")[0]) + Number(oneH.toTimeString().split(" ")[0].split(":")[0]);
             if (eventsDict[currentHour]){
                 eventsDict[currentHour] += 1
             }
@@ -50,14 +52,18 @@ const Group = () => {
         requestHelper.get("/activities/group/params", { query: { code: groupCode} }).then((res) => setEvents(res.data));
     }, [groupCode]);
 
-    console.log("group idex");
     return (
         <div style={styles.pageWrapper}>
             <FullCalendar
                 headerToolbar={{
                     left: "title",
-                    center: "",
+                    center: "groupName",
                     right: "today prev,next",
+                }}
+                customButtons={{
+                    groupName: {
+                        text: `${group[0].name} - ${group[0].code}`,
+                    },
                 }}
                 contentHeight="auto"
                 allDaySlot={false}

@@ -5,6 +5,7 @@ import {changeShowAddGroup} from "../../redux/app/actions";
 import {useDispatch} from "react-redux";
 import requestHelper from "../../requestHelper";
 import requestHalper from "../../requestHelper";
+import {useHistory} from "react-router-dom";
 
 const styles = {
     errorText: { color: "red" },
@@ -21,25 +22,28 @@ const AddGroup = () => {
     const [groupName, setGroupName] = useState("");
 
     const addGroupModal = useSelector(state => state.app.addGroupModal);
-    const user = useSelector(state => state.user.user);
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const handleCreateGroup = async () => {
         const group = await requestHelper.post("/groups", {
                 name: groupName,
                 code: "",
             });
-        await requestHelper.put(`/add-group/${group.data.id}`, {
-            userId: user.id
-        })
-        const res = await requestHalper
-            .get(`/users/groups/${user.id}`)
+        await requestHelper.patch(`/users/add-group/?userId=${user.id}&groupId=${group.data.id}`);
+        const res = await requestHalper.get(`/users/groups/${user.id}`);
 
         localStorage.setItem("groups", JSON.stringify(res.data));
+        localStorage.setItem("selectedGroup", group.data.code);
 
         setGroupName("");
         dispatch(changeShowAddGroup(false));
+
+        //eslint-disable-next-line
+        location.reload();
+        history.push("/group");
     }
 
     return (
