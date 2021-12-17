@@ -48,12 +48,8 @@ const Login = () => {
             .then((res) => res.data)
             .then((res) => {
                 localStorage.setItem("user", JSON.stringify(res));
-                requestHalper
-                    .get(`/users/groups/${res.id}`)
-                    .then((gres) => gres.data)
-                    .then((gres) => {
-                        localStorage.setItem("groups", JSON.stringify(gres));
-                })
+
+
                 history.push("/home");
                 document.location.reload();
             })

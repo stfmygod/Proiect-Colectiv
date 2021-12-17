@@ -6,11 +6,12 @@ import Home from "../containers/Home";
 import Login from "../containers/Login";
 import { clearToken } from "../utils";
 import {changeShowAddGroup, changeShowJoinGroup} from "../redux/app/actions";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {cleanGroup} from "../redux/groups/actions";
 
 const AppRouter = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    const groups = JSON.parse(localStorage.getItem("groups")) || [];
+    const groups = useSelector(state => state.group.list);
     const dispatch = useDispatch();
 
     const getNavbarLinks = () =>
@@ -51,6 +52,7 @@ const AppRouter = () => {
                             <Nav
                                 onClick={() => {
                                     clearToken();
+                                    dispatch(cleanGroup());
                                 }}
                             >
                                 <Nav.Link href="/">Log out</Nav.Link>

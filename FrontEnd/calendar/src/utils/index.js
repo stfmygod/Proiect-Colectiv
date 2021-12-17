@@ -10,4 +10,5 @@ export function getToken() {
 
 export function clearToken() {
     localStorage.removeItem("user");
+    localStorage.removeItem("selectedGroup");
 }

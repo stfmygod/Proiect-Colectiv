@@ -69,8 +69,13 @@ public class UserService {
         throw new CustomException("Email and password combination do not match!");
     }
 
-    public User addGroup(Long userId, Long groupId) {
-        Group group = groupRepository.findById(groupId).orElseThrow(() -> new CustomException(String.format("There is no group with id = %d", groupId)));
+    public User addGroup(Long userId, Long groupId, String code) {
+        Group group;
+        if (code.equals("null")) {
+            group = groupRepository.findById(groupId).orElseThrow(() -> new CustomException(String.format("There is no group with id = %d", groupId)));
+        } else {
+            group = groupRepository.findByCode(code).orElseThrow(() -> new CustomException(String.format("There is no group with code = %s", code)));
+        }
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(String.format("There is no user with id = %d", userId)));
 
         if(user.getGroups().contains(group)) {

@@ -7,6 +7,9 @@ import moment from "moment";
 import "./style.css";
 import AddGroup from "../Group/addGroup";
 import JoinGroup from "../Group/joinGroup";
+import requestHalper from "../../requestHelper";
+import {useDispatch} from "react-redux";
+import {saveGroups} from "../../redux/groups/actions";
 
 const styles = {
     pageWrapper: {
@@ -21,10 +24,16 @@ const Home = () => {
     const [events, setEvents] = useState([]);
 
     const user = JSON.parse(localStorage.getItem("user"));
-    
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
+        requestHalper.get(`/users/groups/${user.id}`)
+            .then((gres) => gres.data)
+            .then((gres) => {
+                dispatch(saveGroups(gres))
+            })
     }, []);
 
     const handleAddRequest = (values) => {

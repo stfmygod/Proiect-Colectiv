@@ -6,6 +6,9 @@ import moment from "moment";
 import AddGroup from "./addGroup";
 import "./style.css";
 import JoinGroup from "./joinGroup";
+import requestHalper from "../../requestHelper";
+import {useDispatch, useSelector} from "react-redux";
+import {saveGroups} from "../../redux/groups/actions";
 
 const styles = {
     pageWrapper: {
@@ -15,11 +18,12 @@ const styles = {
 
 const Group = () => {
     const [events, setEvents] = useState([]);
-    // console.log(events)
 
     const user = JSON.parse(localStorage.getItem("user"));
     const groupCode = localStorage.getItem("selectedGroup");
-    const group = JSON.parse(localStorage.getItem("groups")).filter(e => e.code == groupCode);
+    const group = useSelector(state => state.group.list).filter(e => e.code == groupCode);
+
+    const dispatch = useDispatch();
 
     //collecting the number of events in every hour
     let eventsDict = {}
@@ -51,9 +55,15 @@ const Group = () => {
 
     useEffect(() => {
         requestHelper.get("/activities/group/params", { query: { code: groupCode} }).then((res) => setEvents(res.data));
+        requestHalper.get(`/users/groups/${user.id}`)
+            .then((gres) => gres.data)
+            .then((gres) => {
+                dispatch(saveGroups(gres));
+            })
     }, [groupCode]);
 
     return (
+        group[0] ?
         <div style={styles.pageWrapper}>
             <FullCalendar
                 headerToolbar={{
@@ -83,6 +93,7 @@ const Group = () => {
             <AddGroup />
             <JoinGroup />
         </div>
+            : null
     );
 };
 

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
 import {useSelector} from "react-redux";
-import {changeShowJoinGroup} from "../../redux/app/actions";
+import {changeShowAddGroup, changeShowJoinGroup} from "../../redux/app/actions";
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
+import requestHelper from "../../requestHelper";
+import requestHalper from "../../requestHelper";
 
 const styles = {
     errorText: { color: "red" },
@@ -20,13 +22,25 @@ const JoinGroup = () => {
     const [groupCode, setGroupCode] = useState("");
 
     const joinGroupModal = useSelector(state => state.app.joinGroupModal);
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
-    const handleJoinGroup = () => {
-        console.log("Join Group!");
+    const handleJoinGroup = async () => {
+        await requestHelper.patch(`/users/add-group/?userId=${user.id}&groupId=-1&code=${groupCode}`);
+
+        const res = await requestHalper.get(`/users/groups/${user.id}`);
+
+        localStorage.setItem("groups", JSON.stringify(res.data));
+        localStorage.setItem("selectedGroup", groupCode);
 
         setGroupCode("");
+        dispatch(changeShowJoinGroup(false));
+
+        //eslint-disable-next-line
+        location.reload();
+        history.push("/group");
     }
 
     return (

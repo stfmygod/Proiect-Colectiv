@@ -32,7 +32,7 @@ const AddGroup = () => {
                 name: groupName,
                 code: "",
             });
-        await requestHelper.patch(`/users/add-group/?userId=${user.id}&groupId=${group.data.id}`);
+        await requestHelper.patch(`/users/add-group/?userId=${user.id}&groupId=${group.data.id}&code=null`);
         const res = await requestHalper.get(`/users/groups/${user.id}`);
 
         localStorage.setItem("groups", JSON.stringify(res.data));
