@@ -6,6 +6,7 @@ import AddEvent from "./addEvent";
 import moment from "moment";
 import "./style.css";
 import AddGroup from "../Group/addGroup";
+import JoinGroup from "../Group/joinGroup";
 
 const styles = {
     pageWrapper: {
@@ -114,6 +115,7 @@ const Home = () => {
                 }
             />
             <AddGroup />
+            <JoinGroup />
         </div>
     );
 };

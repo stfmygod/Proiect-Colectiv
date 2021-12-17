@@ -5,7 +5,7 @@ import { PrivateRoutes, PublicRoutes } from "./routes";
 import Home from "../containers/Home";
 import Login from "../containers/Login";
 import { clearToken } from "../utils";
-import {changeShowAddGroup} from "../redux/app/actions";
+import {changeShowAddGroup, changeShowJoinGroup} from "../redux/app/actions";
 import {useDispatch} from "react-redux";
 
 const AppRouter = () => {
@@ -36,12 +36,14 @@ const AppRouter = () => {
                             <NavDropdown title="Groups" id="basic-nav-dropdown">
                                 {getGroups()}
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item onClick={() => {
-                                    dispatch(changeShowAddGroup(true))
-                                }}>
+                                <NavDropdown.Item
+                                    onClick={() => {dispatch(changeShowAddGroup(true))}}
+                                >
                                     Create Group
                                 </NavDropdown.Item>
-                                <NavDropdown.Item>
+                                <NavDropdown.Item
+                                    onClick={() => {dispatch(changeShowJoinGroup(true))}}
+                                >
                                     Join Group
                                 </NavDropdown.Item>
                             </NavDropdown>

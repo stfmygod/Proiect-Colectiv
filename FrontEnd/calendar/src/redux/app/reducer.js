@@ -1,8 +1,9 @@
-import {CHANGE_SHOW_ADD_GROUP, START_LOAD, STOP_LOAD} from "./types";
+import {CHANGE_SHOW_ADD_GROUP, CHANGE_SHOW_JOIN_GROUP, START_LOAD, STOP_LOAD} from "./types";
 
 const INITIAL_STATE = {
     loading: true,
     addGroupModal: false,
+    joinGroupModal: false,
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -21,7 +22,12 @@ const reducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 addGroupModal: action.addGroupModal
-            }
+            };
+        case CHANGE_SHOW_JOIN_GROUP:
+            return {
+                ...state,
+                joinGroupModal: action.joinGroupModal
+            };
         default:
             return state;
     }

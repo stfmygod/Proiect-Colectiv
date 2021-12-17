@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
 import {useSelector} from "react-redux";
 import {changeShowAddGroup} from "../../redux/app/actions";
 import {useDispatch} from "react-redux";
 import requestHelper from "../../requestHelper";
-import requestHalper from "../../requestHelper";
 import {useHistory} from "react-router-dom";
+import requestHalper from "../../requestHelper";
 
 const styles = {
     errorText: { color: "red" },
@@ -54,6 +54,7 @@ const AddGroup = () => {
             show={addGroupModal}
             onHide={() => {
                 dispatch(changeShowAddGroup(false))
+                setGroupName("")
             }}
             >
             <Modal.Header>
@@ -72,7 +73,9 @@ const AddGroup = () => {
             <Modal.Footer>
                 <Button onClick={() => {
                     dispatch(changeShowAddGroup(false))
-                }}>Close</Button>
+                    setGroupName("")}}
+                >
+                    Close</Button>
                 <Button onClick={handleCreateGroup}>Create</Button>
             </Modal.Footer>
         </Modal>

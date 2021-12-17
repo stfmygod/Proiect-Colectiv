@@ -5,6 +5,7 @@ import requestHelper from "../../requestHelper";
 import moment from "moment";
 import AddGroup from "./addGroup";
 import "./style.css";
+import JoinGroup from "./joinGroup";
 
 const styles = {
     pageWrapper: {
@@ -80,6 +81,7 @@ const Group = () => {
             />
 
             <AddGroup />
+            <JoinGroup />
         </div>
     );
 };
