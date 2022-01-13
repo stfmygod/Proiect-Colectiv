@@ -83,7 +83,7 @@ const Group = () => {
                 for (let j = i + 1; j < newList.length; j += 1) {
                     if(newList[i].start.getHours() === newList[j].start.getHours()) {
                         newList[i].nbOfEvents += 1
-                        //newList.splice(j, 1)
+                        newList.splice(j, 1)
                     }
                 }
             }
