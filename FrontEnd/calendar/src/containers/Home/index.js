@@ -8,8 +8,9 @@ import "./style.css";
 import AddGroup from "../Group/addGroup";
 import JoinGroup from "../Group/joinGroup";
 import requestHalper from "../../requestHelper";
-import {useDispatch} from "react-redux";
-import {saveGroups} from "../../redux/groups/actions";
+import { useDispatch } from "react-redux";
+import { saveGroups } from "../../redux/groups/actions";
+import { getColorForPercentage } from '../../utils';
 
 const styles = {
     pageWrapper: {
@@ -37,19 +38,19 @@ const Home = () => {
     }, []);
 
     const handleAddRequest = (values) => {
-        try{
-            requestHelper.post("/activities", {userId: user.id, name: values.title, description: values.description, date: moment(values.startDate).format('YYYY-MM-DD'), startHour: values.startTime, endHour: values.stopTime})
+        try {
+            requestHelper.post("/activities", { userId: user.id, name: values.title, description: values.description, date: moment(values.startDate).format('YYYY-MM-DD'), startHour: values.startTime, endHour: values.stopTime })
                 .then(() => {
                     requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
                 });
-        }catch(err) {
+        } catch (err) {
             console.log(err);
         }
     }
 
     const handleDeleteEvent = (id) => {
         try {
-            requestHelper.remove(`/activities/${id}`).then( () => {
+            requestHelper.remove(`/activities/${id}`).then(() => {
                 requestHelper.get("/activities/all", { query: { user: user.id } }).then((res) => setEvents(res.data));
             })
         } catch (error) {
@@ -66,8 +67,10 @@ const Home = () => {
         <div style={styles.pageWrapper}>
             <FullCalendar
                 eventClick={data => {
-                    const newSelectedEvent = events.filter(elem => elem.id === data.event.id)[0];
-                    setSelectedEvent(newSelectedEvent);
+                    const newSelectedEvent = events.filter(elem => {
+                        return elem.id === parseInt(data.event.id)
+                    });
+                    setSelectedEvent(newSelectedEvent[0]);
                     setShowEditEvent(true);
                 }}
                 headerToolbar={{
@@ -88,11 +91,14 @@ const Home = () => {
                 plugins={[timeGridPlugin]}
                 initialView="timeGridWeek"
                 events={events.map((event) => {
+                    const startMoment = moment(`${event.date} ${event.startHour}`, "YYYY-MM-DD HH:mm:ss");
+                    const endMoment = moment(`${event.date} ${event.endHour}`, "YYYY-MM-DD HH:mm:ss");
+
                     return ({
                         id: event.id,
                         title: event.name,
-                        start: new Date(moment(`${event.date} ${event.startHour}`, "YYYY-MM-DD HH:mm:ss").format("MMM DD, YYYY HH:mm")),
-                        end: new Date(moment(`${event.date} ${event.endHour}`, "YYYY-MM-DD HH:mm:ss").format("MMM DD, YYYY HH:mm")),
+                        start: new Date(startMoment.format("MMM DD, YYYY HH:mm")),
+                        end: new Date(endMoment.format("MMM DD, YYYY HH:mm")),
                     })
                 })}
             />

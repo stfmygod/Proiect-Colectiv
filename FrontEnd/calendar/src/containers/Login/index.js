@@ -25,7 +25,7 @@ const styles = {
     },
     footer: {
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "center",
         width: "100%",
         padding: "0px 20px 0px 20px",
     },
@@ -112,7 +112,7 @@ const Login = () => {
                         )}
                     </Formik>
                     <div style={styles.footer}>
-                        <Card.Link href="#">Forgot password?</Card.Link>
+                        {/* <Card.Link href="#">Forgot password?</Card.Link> */}
                         <Card.Link href="/register">Create an account</Card.Link>
                     </div>
                 </Card.Body>

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
-import {useSelector} from "react-redux";
-import {changeShowAddGroup, changeShowJoinGroup} from "../../redux/app/actions";
-import {useDispatch} from "react-redux";
-import {useHistory} from "react-router-dom";
+import { useSelector } from "react-redux";
+import { changeShowAddGroup, changeShowJoinGroup } from "../../redux/app/actions";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import requestHelper from "../../requestHelper";
 import requestHalper from "../../requestHelper";
 
@@ -16,10 +16,12 @@ const styles = {
         justifyContent: "center",
         padding: "30px 120px 30px 120px",
     },
+    errorText: { color: "red" },
 };
 
 const JoinGroup = () => {
     const [groupCode, setGroupCode] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
 
     const joinGroupModal = useSelector(state => state.app.joinGroupModal);
     const user = JSON.parse(localStorage.getItem("user"));
@@ -28,19 +30,23 @@ const JoinGroup = () => {
     const history = useHistory();
 
     const handleJoinGroup = async () => {
-        await requestHelper.patch(`/users/add-group/?userId=${user.id}&groupId=-1&code=${groupCode}`);
+        try {
+            await requestHelper.patch(`/users/add-group/?userId=${user.id}&groupId=-1&code=${groupCode}`);
 
-        const res = await requestHalper.get(`/users/groups/${user.id}`);
+            const res = await requestHalper.get(`/users/groups/${user.id}`);
 
-        localStorage.setItem("groups", JSON.stringify(res.data));
-        localStorage.setItem("selectedGroup", groupCode);
+            localStorage.setItem("groups", JSON.stringify(res.data));
+            localStorage.setItem("selectedGroup", groupCode);
 
-        setGroupCode("");
-        dispatch(changeShowJoinGroup(false));
+            setGroupCode("");
+            dispatch(changeShowJoinGroup(false));
 
-        //eslint-disable-next-line
-        location.reload();
-        history.push("/group");
+            //eslint-disable-next-line
+            location.reload();
+            history.push("/group");
+        } catch (err) {
+            setErrorMsg("The group does not exist or you are already in it")
+        }
     }
 
     return (
@@ -60,20 +66,26 @@ const JoinGroup = () => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={styles.modalBody}>
+                {errorMsg && <p className="text-center" style={styles.errorText}>{errorMsg}</p>}
                 <Form.Group className={"mb-3"}>
                     <Form.Label>Enter group code</Form.Label>
                     <Form.Control
-                    value={groupCode}
-                    onChange={(event) => {
-                        setGroupCode(event.target.value)
-                    }}/>
+                        value={groupCode}
+                        onChange={(event) => {
+                            if(errorMsg) {
+                                setErrorMsg("")
+                            }
+                            setGroupCode(event.target.value)
+                        }} />
                 </Form.Group>
             </Modal.Body>
             <Modal.Footer>
                 <Button
                     onClick={() => {
                         dispatch(changeShowJoinGroup(false))
-                        setGroupCode("");}}
+                        setGroupCode("")
+                        setErrorMsg("")
+                    }}
                 >
                     Close</Button>
                 <Button onClick={handleJoinGroup}>Join</Button>

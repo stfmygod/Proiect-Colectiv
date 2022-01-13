@@ -76,7 +76,7 @@ const Register = () => {
                 document.location.reload();
             })
             .catch((e) => {
-                setErrorString(e.response.data);
+                setErrorString(e.response.data.error);
             });
     };
 
