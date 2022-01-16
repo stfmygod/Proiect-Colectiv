@@ -18,4 +18,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     @Query("select a from Activity a where exists(select g from a.user.groups g where g.code = ?1)")
     List<Activity> findAllByGroup(String code);
+
+    @Query("select a from Activity  a where a.user.id = ?1")
+    List<Activity> findAllByUserId(Long id);
 }

@@ -30,10 +30,10 @@ public class ActivityController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ActivityController.class);
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<ActivityDto>> getAllActivities(){
+    public ResponseEntity<List<ActivityDto>> getAllActivities(@RequestParam Long user){
         LOGGER.info("Get all activities.");
         return new ResponseEntity<>(
-                activityConverter.convertModelsToDtos(activityService.getAll()),
+                activityConverter.convertModelsToDtos(activityService.getAll(user)),
                 HttpStatus.OK
         );
     }

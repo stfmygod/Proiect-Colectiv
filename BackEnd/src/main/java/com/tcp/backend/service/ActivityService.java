@@ -24,8 +24,8 @@ public class ActivityService {
     private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
 
-    public List<Activity> getAll() {
-        return activityRepository.findAll();
+    public List<Activity> getAll(Long userId) {
+        return activityRepository.findAllByUserId(userId);
     }
 
     public Activity add(Activity activity){

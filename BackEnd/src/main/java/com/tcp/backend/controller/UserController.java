@@ -134,6 +134,23 @@ public class UserController {
         }
     }
 
+    @PostMapping("/remove-group")
+    public ResponseEntity<?> removeUserFromGroup(@RequestParam Long userId,
+                                                 @RequestParam Long groupId) {
+        LOGGER.info("Remove user from group");
+
+        try {
+            userService.removeUserFromGroup(userId, groupId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (CustomException e) {
+            LOGGER.error(e.getMessage());
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
     @GetMapping(value = "/groups/{id}")
     public ResponseEntity<List<GroupDto>> getGroupsOfUser(@PathVariable Long id) {
         LOGGER.info("Get groups of user");

@@ -88,6 +88,18 @@ public class UserService {
         return user;
     }
 
+    public void removeUserFromGroup(Long userId, Long groupId) {
+        Group group =groupRepository.findById(groupId).orElseThrow(() -> new CustomException(String.format("There is no group with id = %d", groupId)));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(String.format("There is no user with id = %d", userId)));
+        if (!user.getGroups().contains(group)) {
+            throw new CustomException(String.format("There is no group with id = %d, for this user.", groupId));
+        }
+        user.getGroups().remove(group);
+        group.getUsers().remove(user);
+        update(user);
+        groupService.update(group);
+    }
+
     public List<Group> getGroups(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(String.format("There is no user with id = %d", userId)));
         return user.getGroups();
