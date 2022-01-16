@@ -57,6 +57,7 @@ const Group = () => {
 
     const breakEventsByHour = (list) => {
         const newList = []
+        const eventsByDate = {}
 
         list.forEach(event => {
             let start = parseInt(event.startHour.split(':')[0])
@@ -68,7 +69,7 @@ const Group = () => {
 
                 newList.push({
                     nbOfEvents: 1,
-                    color: getColorForPercentage(0),
+                    dateString: event.date,
                     id: event.id,
                     title: event.name,
                     start: new Date(startMoment.format("MMM DD, YYYY HH:mm")),
@@ -78,10 +79,9 @@ const Group = () => {
                 start += 1
             } while (start < end)
 
-
             for (let i = 0; i < newList.length; i += 1) {
                 for (let j = i + 1; j < newList.length; j += 1) {
-                    if(newList[i].start.getHours() === newList[j].start.getHours()) {
+                    if (+newList[i].start === +newList[j].start) {
                         newList[i].nbOfEvents += 1
                         newList.splice(j, 1)
                     }
@@ -89,7 +89,22 @@ const Group = () => {
             }
         })
 
-        return newList
+        newList.forEach(el => {
+            if (eventsByDate[el.dateString]) {
+                eventsByDate[el.dateString] += el.nbOfEvents
+            } else {
+                eventsByDate[el.dateString] = el.nbOfEvents
+            }
+        })
+
+        console.log(newList, eventsByDate);
+
+        return newList.map(el => {
+            return {
+                ...el,
+                color: getColorForPercentage(el.nbOfEvents / eventsByDate[el.dateString] < 0.85 ? el.nbOfEvents / eventsByDate[el.dateString] : el.nbOfEvents / eventsByDate[el.dateString] + 0.25),
+            }
+        })
     }
 
     useEffect(() => {
@@ -105,6 +120,7 @@ const Group = () => {
         group[0] ?
             <div style={styles.pageWrapper}>
                 <FullCalendar
+                    eventTextColor='black'
                     headerToolbar={{
                         left: "title",
                         center: "groupName",

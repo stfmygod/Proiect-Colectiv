@@ -14,9 +14,9 @@ export function clearToken() {
 }
 
 const percentColors = [
-    { pct: 0.0, color: { r: 0xff, g: 0x00, b: 0 } },
-    { pct: 0.5, color: { r: 0xff, g: 0xff, b: 0 } },
-    { pct: 1.0, color: { r: 0x00, g: 0xff, b: 0 } }
+    { pct: 0.0, color: { r: 0xa3, g: 0xde, b: 0xa4 } },
+    { pct: 0.5, color: { r: 0xfc, g: 0xf5, b: 0xc7 } },
+    { pct: 1.0, color: { r: 0xde, g: 0xa5, b: 0xa4 } }
 ];
 
 const componentToHex = (c) => {
