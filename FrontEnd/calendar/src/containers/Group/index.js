@@ -26,6 +26,10 @@ const Group = () => {
 
     const dispatch = useDispatch();
 
+
+    //display all users of the group
+    //count how many users are in a group => use the css styling to display a color for each percentage group
+    //heatmap ref https://reactjsexample.com/a-customizable-calendar-heatmap-react-component-built-on-svg/
     const getNumberOfEvents = () => {
         //collecting the number of events in every hour
         let eventsDict = {}
@@ -50,10 +54,6 @@ const Group = () => {
             }
         }
     }
-
-    //display all users of the group
-    //count how many users are in a group => use the css styling to display a color for each percentage group
-    //heatmap ref https://reactjsexample.com/a-customizable-calendar-heatmap-react-component-built-on-svg/
 
     const breakEventsByHour = (list) => {
         const newList = []
@@ -82,6 +82,7 @@ const Group = () => {
             for (let i = 0; i < newList.length; i += 1) {
                 for (let j = i + 1; j < newList.length; j += 1) {
                     if (+newList[i].start === +newList[j].start) {
+                        newList[i].title = `${newList[i].title}, ${newList[j].title}`
                         newList[i].nbOfEvents += 1
                         newList.splice(j, 1)
                     }
@@ -97,12 +98,10 @@ const Group = () => {
             }
         })
 
-        console.log(newList, eventsByDate);
-
         return newList.map(el => {
             return {
                 ...el,
-                color: getColorForPercentage(el.nbOfEvents / eventsByDate[el.dateString] < 0.85 ? el.nbOfEvents / eventsByDate[el.dateString] : el.nbOfEvents / eventsByDate[el.dateString] + 0.25),
+                color: getColorForPercentage(el.nbOfEvents / eventsByDate[el.dateString] > 0.85 ? el.nbOfEvents / eventsByDate[el.dateString] : el.nbOfEvents / eventsByDate[el.dateString] + 0.1),
             }
         })
     }

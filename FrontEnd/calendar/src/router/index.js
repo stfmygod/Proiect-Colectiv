@@ -47,6 +47,12 @@ const AppRouter = () => {
                                     >
                                         Join Group
                                     </NavDropdown.Item>
+                                    {window.location.href.split('/')[window.location.href.split('/').length - 1] === 'group' &&
+                                        <NavDropdown.Item
+                                            onClick={() => {  }}
+                                        >
+                                            Leave Group
+                                        </NavDropdown.Item>}
                                 </NavDropdown>
                             </Nav>
 

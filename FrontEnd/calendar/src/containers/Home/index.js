@@ -59,7 +59,8 @@ const Home = () => {
     }
 
     const handleEditRequest = (values) => {
-        console.log(values);
+        handleDeleteEvent(selectedEvent.id)
+        handleAddRequest(values)
         setSelectedEvent({})
     }
 
