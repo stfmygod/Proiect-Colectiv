@@ -89,7 +89,7 @@ public class UserService {
     }
 
     public void removeUserFromGroup(Long userId, Long groupId) {
-        Group group =groupRepository.findById(groupId).orElseThrow(() -> new CustomException(String.format("There is no group with id = %d", groupId)));
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new CustomException(String.format("There is no group with id = %d", groupId)));
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(String.format("There is no user with id = %d", userId)));
         if (!user.getGroups().contains(group)) {
             throw new CustomException(String.format("There is no group with id = %d, for this user.", groupId));

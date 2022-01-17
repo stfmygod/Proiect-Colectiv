@@ -134,7 +134,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/remove-group")
+    @PostMapping(value = "/remove-group")
     public ResponseEntity<?> removeUserFromGroup(@RequestParam Long userId,
                                                  @RequestParam Long groupId) {
         LOGGER.info("Remove user from group");

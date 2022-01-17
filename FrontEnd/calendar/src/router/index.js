@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import { PrivateRoutes, PublicRoutes } from "./routes";
 import Home from "../containers/Home";
@@ -8,11 +8,14 @@ import { clearToken } from "../utils";
 import { changeShowAddGroup, changeShowJoinGroup } from "../redux/app/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { cleanGroup } from "../redux/groups/actions";
+import requestHalper from "../requestHelper"
 
 const AppRouter = () => {
     const user = JSON.parse(localStorage.getItem("user"));
+    const groupCode = localStorage.getItem("selectedGroup");
     const groups = useSelector(state => state.group.list);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const getNavbarLinks = () =>
         PrivateRoutes.map((elem) => {
@@ -49,7 +52,15 @@ const AppRouter = () => {
                                     </NavDropdown.Item>
                                     {window.location.href.split('/')[window.location.href.split('/').length - 1] === 'group' &&
                                         <NavDropdown.Item
-                                            onClick={() => {  }}
+                                            href="home"
+                                            onClick={() => {
+                                                const selectedGroupObj = groups.filter(el => el.code === groupCode)[0]
+
+                                                requestHalper.post(`/users/remove-group/?userId=${user.id}&groupId=${selectedGroupObj.id}`)
+                                                    .catch(err => {
+                                                        console.log(err)
+                                                    })
+                                            }}
                                         >
                                             Leave Group
                                         </NavDropdown.Item>}
